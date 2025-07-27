@@ -1,16 +1,17 @@
-<div class="container" ng-if="myInfoCtrl.user">
-  <h2>My Info</h2>
-  <p><strong>First Name:</strong> {{myInfoCtrl.user.firstName}}</p>
-  <p><strong>Last Name:</strong> {{myInfoCtrl.user.lastName}}</p>
-  <p><strong>Email:</strong> {{myInfoCtrl.user.email}}</p>
-  <p><strong>Phone:</strong> {{myInfoCtrl.user.phone}}</p>
-  <div ng-if="myInfoCtrl.menuItem">
-    <h4>Favorite Dish</h4>
-    <p><strong>{{myInfoCtrl.menuItem.name}}</strong></p>
-    <p>{{myInfoCtrl.menuItem.description}}</p>
-    <img ng-src="{{myInfoCtrl.menuItem.imageUrl}}" alt="Dish image" class="img-thumbnail">
+<div class="container" ng-controller="MyInfoController as myInfoCtrl">
+  <div ng-if="!myInfoCtrl.user">
+    <p>Not Signed Up Yet. <a href="#!/signup">Sign up Now!</a></p>
   </div>
-</div>
-<div class="container" ng-if="!myInfoCtrl.user">
-  <h2>Not Signed Up Yet. <a href="#/signup">Sign up Now!</a></h2>
+  <div ng-if="myInfoCtrl.user">
+    <h2>My Info</h2>
+    <p><strong>Name:</strong> {{ myInfoCtrl.user.firstName }} {{ myInfoCtrl.user.lastName }}</p>
+    <p><strong>Email:</strong> {{ myInfoCtrl.user.email }}</p>
+    <p><strong>Phone:</strong> {{ myInfoCtrl.user.phone }}</p>
+    <div ng-if="myInfoCtrl.favorite">
+      <h3>Your Favorite Dish:</h3>
+      <p><strong>{{ myInfoCtrl.favorite.name }}</strong></p>
+      <img ng-src="images/{{ myInfoCtrl.favorite.short_name }}.jpg" width="200">
+      <p>{{ myInfoCtrl.favorite.description }}</p>
+    </div>
+  </div>
 </div>

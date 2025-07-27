@@ -1,28 +1,32 @@
-<div class="container">
-  <h2>Sign Up</h2>
-  <form name="signUpForm" ng-submit="signUpCtrl.submit()" novalidate>
-    <div class="form-group">
-      <label>First Name:</label>
-      <input type="text" class="form-control" ng-model="signUpCtrl.user.firstName" required>
+<div class="container" ng-controller="SignUpController as signUpCtrl">
+  <form name="signUpForm" novalidate ng-submit="signUpCtrl.submit()">
+    <div class="form-group" ng-class="{ 'has-error': signUpForm.firstName.$invalid && signUpForm.firstName.$touched }">
+      <label>First Name</label>
+      <input type="text" name="firstName" ng-model="signUpCtrl.user.firstName" required class="form-control">
     </div>
-    <div class="form-group">
-      <label>Last Name:</label>
-      <input type="text" class="form-control" ng-model="signUpCtrl.user.lastName" required>
+
+    <div class="form-group" ng-class="{ 'has-error': signUpForm.lastName.$invalid && signUpForm.lastName.$touched }">
+      <label>Last Name</label>
+      <input type="text" name="lastName" ng-model="signUpCtrl.user.lastName" required class="form-control">
     </div>
-    <div class="form-group">
-      <label>Email:</label>
-      <input type="email" class="form-control" ng-model="signUpCtrl.user.email" required>
+
+    <div class="form-group" ng-class="{ 'has-error': signUpForm.email.$invalid && signUpForm.email.$touched }">
+      <label>Email</label>
+      <input type="email" name="email" ng-model="signUpCtrl.user.email" required class="form-control">
     </div>
-    <div class="form-group">
-      <label>Phone:</label>
-      <input type="tel" class="form-control" ng-model="signUpCtrl.user.phone" required>
+
+    <div class="form-group" ng-class="{ 'has-error': signUpForm.phone.$invalid && signUpForm.phone.$touched }">
+      <label>Phone</label>
+      <input type="tel" name="phone" ng-model="signUpCtrl.user.phone" required class="form-control">
     </div>
+
     <div class="form-group">
-      <label>Favorite Menu Item:</label>
-      <input type="text" class="form-control" ng-model="signUpCtrl.user.favoriteDish" required>
-      <div class="text-danger" ng-show="signUpCtrl.invalidMenuItem">No such menu number exists.</div>
+      <label>Favorite Menu Number</label>
+      <input type="text" name="favorite" ng-model="signUpCtrl.user.favorite" class="form-control">
+      <span class="text-danger" ng-if="signUpCtrl.invalidFavorite">No such menu number exists</span>
     </div>
+
     <button type="submit" class="btn btn-primary" ng-disabled="signUpForm.$invalid">Submit</button>
-    <div class="text-success" ng-show="signUpCtrl.saved">Your information has been saved.</div>
+    <div class="text-success" ng-if="signUpCtrl.saved">Your information has been saved</div>
   </form>
 </div>

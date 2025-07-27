@@ -1,29 +1,20 @@
 (function () {
-"use strict";
+'use strict';
 
-angular.module('common')
+angular.module('restaurant')
 .service('MenuService', MenuService);
 
-
-MenuService.$inject = ['$http', 'ApiPath'];
-function MenuService($http, ApiPath) {
+MenuService.$inject = ['$http'];
+function MenuService($http) {
   var service = this;
 
-  service.getCategories = function () {
-    return $http.get(ApiPath + '/categories.json').then(function (response) {
+  service.getMenuItem = function (category, number) {
+    var url = `https://coursera-jhu-default-rtdb.firebaseio.com/menu_items/${category}/menu_items/${number}.json`;
+    return $http.get(url).then(function (response) {
       return response.data;
+    }, function () {
+      return null;
     });
   };
-
-
-  service.getMenuItems = function (category) {
-    return $http.get(ApiPath + '/menu_items/' + category + '.json').then(function (response) {
-      return response.data;
-    });
-  };
-
 }
-
-
-
 })();

@@ -1,34 +1,27 @@
 (function () {
-  'use strict';
+'use strict';
 
-  angular.module('public')
-  .controller('SignUpController', SignUpController);
+angular.module('restaurant')
+.controller('SignUpController', SignUpController);
 
-  SignUpController.$inject = ['UserService', '$http'];
-  function SignUpController(UserService, $http) {
-    var signUpCtrl = this;
-    signUpCtrl.user = {};
-    signUpCtrl.invalidMenuItem = false;
-    signUpCtrl.saved = false;
+SignUpController.$inject = ['MenuService', 'UserService'];
+function SignUpController(MenuService, UserService) {
+  var signUpCtrl = this;
+  signUpCtrl.user = {};
+  signUpCtrl.saved = false;
+  signUpCtrl.invalidFavorite = false;
 
-    signUpCtrl.submit = function () {
-      var itemCode = signUpCtrl.user.favoriteDish || "";
-      var category = itemCode.charAt(0).toUpperCase();
-      var index = parseInt(itemCode.slice(1)) || 0;
-      var url = `https://coursera-jhu-default-rtdb.firebaseio.com/menu_items/${category}/menu_items/${index}.json`;
-
-      $http.get(url).then(function (response) {
-        if (response.data) {
-          signUpCtrl.invalidMenuItem = false;
-          signUpCtrl.saved = true;
-          signUpCtrl.user.menuItem = response.data;
-          signUpCtrl.user.menuItem.imageUrl = "images/menu-tile.jpg"; // demo purpose
-          UserService.saveUser(signUpCtrl.user);
-        } else {
-          signUpCtrl.invalidMenuItem = true;
-          signUpCtrl.saved = false;
-        }
-      });
-    };
-  }
+  signUpCtrl.submit = function () {
+    MenuService.getMenuItem(signUpCtrl.user.favorite).then(function (response) {
+      if (response) {
+        signUpCtrl.invalidFavorite = false;
+        UserService.saveUser(signUpCtrl.user, response);
+        signUpCtrl.saved = true;
+      } else {
+        signUpCtrl.invalidFavorite = true;
+        signUpCtrl.saved = false;
+      }
+    });
+  };
+}
 })();
