@@ -1,13 +1,17 @@
 (function () {
-'use strict';
+  'use strict';
 
-angular.module('restaurant')
-.controller('MyInfoController', MyInfoController);
+  angular.module('public')
+  .controller('MyInfoController', MyInfoController);
 
-MyInfoController.$inject = ['UserService'];
-function MyInfoController(UserService) {
-  var myInfoCtrl = this;
-  myInfoCtrl.user = UserService.getUser();
-  myInfoCtrl.favorite = UserService.getFavoriteItem();
-}
+  MyInfoController.$inject = ['UserService'];
+  function MyInfoController(UserService) {
+    var myInfoCtrl = this;
+
+    myInfoCtrl.user = UserService.getUser();
+
+    if (myInfoCtrl.user && myInfoCtrl.user.favoriteDish) {
+      myInfoCtrl.favorite = myInfoCtrl.user.favoriteDish;
+    }
+  }
 })();

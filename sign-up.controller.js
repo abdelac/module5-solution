@@ -1,27 +1,27 @@
 (function () {
-'use strict';
+  'use strict';
 
-angular.module('restaurant')
-.controller('SignUpController', SignUpController);
+  angular.module('public')
+    .controller('SignUpController', SignUpController);
 
-SignUpController.$inject = ['MenuService', 'UserService'];
-function SignUpController(MenuService, UserService) {
-  var signUpCtrl = this;
-  signUpCtrl.user = {};
-  signUpCtrl.saved = false;
-  signUpCtrl.invalidFavorite = false;
+  SignUpController.$inject = ['MenuService', 'UserService'];
+  function SignUpController(MenuService, UserService) {
+    var signupCtrl = this;
+    signupCtrl.user = {};
+    signupCtrl.completed = false;
+    signupCtrl.invalidFavorite = false;
 
-  signUpCtrl.submit = function () {
-    MenuService.getMenuItem(signUpCtrl.user.favorite).then(function (response) {
-      if (response) {
-        signUpCtrl.invalidFavorite = false;
-        UserService.saveUser(signUpCtrl.user, response);
-        signUpCtrl.saved = true;
-      } else {
-        signUpCtrl.invalidFavorite = true;
-        signUpCtrl.saved = false;
-      }
-    });
-  };
-}
+    signupCtrl.submit = function () {
+      MenuService.getMenuItem(signupCtrl.user.favoriteDish)
+        .then(function (response) {
+          UserService.saveUser(signupCtrl.user, response);  // save user + dish
+          signupCtrl.invalidFavorite = false;
+          signupCtrl.completed = true;
+        })
+        .catch(function () {
+          signupCtrl.invalidFavorite = true;
+          signupCtrl.completed = false;
+        });
+    };
+  }
 })();
